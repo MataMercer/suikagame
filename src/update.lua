@@ -1,6 +1,7 @@
 local update = {}
 
 local function updateGame(dt)
+
     world:update(dt)
     gameMap:update(dt)
     player:update(dt)
@@ -12,8 +13,10 @@ local function updateGame(dt)
 end
 
 function update.updateAll(dt)
-    updateGame(dt)
 
+    if GameStart.gamestate == GameStart.GAMEPLAY then
+        updateGame(dt)
+    end
     GameStart:checkWindowSize()
 end
 

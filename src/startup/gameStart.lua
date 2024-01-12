@@ -8,7 +8,7 @@ local function initGlobals()
     GameStart.PAUSE_MENU = 2
     GameStart.GAME_OVER = 3
 
-    GameStart.gamestate = 0
+    GameStart.gamestate = GameStart.MAIN_MENU
     GameStart.globalStun = 0
 end
 
@@ -79,10 +79,10 @@ function GameStart:gameStart()
     require("lib/show")
     _G.anim8 = require("lib/anim8/anim8")
     _G.sti = require("lib/Simple-Tiled-Implementation/sti")
-
+    _G.urutora = require('lib/urutora/urutora')
     local windfield = require("lib/windfield/windfield")
     _G.world = windfield.newWorld(0, 2000, false)
-    world:setQueryDebugDrawing(true)
+    world:setQueryDebugDrawing(false)
 
     -- This second world is for particles, and has downward gravity
     _G.particleWorld = windfield.newWorld(0, 250, false)

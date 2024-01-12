@@ -22,10 +22,29 @@ function love.load()
     end
 
     loadMap(saveData.currentLevel)
+    _G.ui = urutora:new()
     print("Game Loaded.")
+
+    local clickMe = ui.button({
+        text = 'Start Game',
+        x = love.graphics.getWidth() / 2,
+        y = 10,
+        w = 200,
+        h = 100
+    })
+
+    local num = 0
+    clickMe:action(function(e)
+        GameStart.gamestate = GameStart.GAMEPLAY
+        ui:remove(clickMe)
+    end)
+
+    ui:add(clickMe)
 end
 
 function love.update(dt)
+
+    ui:update(dt)
     update.updateAll(dt)
     -- local colliders = world:queryCircleArea(flagX, flagY, 10, { 'Player' })
     -- if #colliders > 0 then
@@ -41,28 +60,30 @@ function love.draw()
     love.graphics.draw(sprites.background, 0, 0, nil, 3, 3)
     love.graphics.setColor(1, 1, 1)
     -- love.graphics.draw(sprites.background, 0, 0, nil, scale, scale)
-
-    local hpBarWidth = 300
-    local currentHpBarWidth = (player.health / player.maxHealth) * hpBarWidth
-    local hpBarHeight = hpBarWidth * 0.1
-    local hpBarX = 5
-    local hpBarY = 5
-    love.graphics.setColor(0, 0, 0)
-    love.graphics.rectangle("fill", hpBarX, hpBarY, hpBarWidth, hpBarHeight)
-    love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
-    love.graphics.rectangle("fill", hpBarX, hpBarY, currentHpBarWidth, hpBarHeight)
-    love.graphics.setColor(1, 1, 1)
-
     cam:attach()
     draw.drawCamera()
 
     cam:detach()
+    ui:draw()
 end
 
 function love.mousepressed(x, y, button)
-    if button == 1 then
-        local colliders = world:queryCircleArea(x, y, 200, {'Platform'})
-    end
+    ui:pressed(x, y, button)
+end
+function love.mousemoved(x, y, dx, dy)
+    ui:moved(x, y, dx, dy)
+end
+function love.mousereleased(x, y, button)
+    ui:released(x, y)
+end
+function love.textinput(text)
+    ui:textinput(text)
+end
+function love.keypressed(k, scancode, isrepeat)
+    ui:keypressed(k, scancode, isrepeat)
+end
+function love.wheelmoved(x, y)
+    ui:wheelmoved(x, y)
 end
 
 function spawnPlatform(x, y, width, height)
