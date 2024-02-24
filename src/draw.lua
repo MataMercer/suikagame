@@ -1,14 +1,14 @@
 local draw = {}
 function draw.drawBeforeCamera()
-    if GameStart.gamestate == GameStart.MAIN_MENU then
-        mainmenu:draw()
+    if GameState.state == GameState.MAIN_MENU then
+        -- mainmenu:draw()
     end
 
 end
 
 function draw.drawCamera()
     -- love.graphics.setColor(love.math.colorFromBytes(139, 172, 15))
-    if GameStart.gamestate == GameStart.GAMEPLAY then
+    if GameState.state == GameState.GAMEPLAY then
         gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
         love.graphics.setColor(1, 1, 1)
 

@@ -3,43 +3,15 @@ function love.load()
 
     colliderToggle = false
     _G.GameStart = require("src/startup/gameStart")
-    GameStart:gameStart()
-    createNewSave()
 
-    -- store all entities in this object.
-    entities = {}
+    require("src/startup/require")
+    requireAll()
 
-    platforms = {}
-    flagX = 0
-    flagY = 0
-
-    saveData = {}
-    saveData.currentLevel = "basemap"
-
-    if love.filesystem.getInfo("data.lua") then
-        local data = love.filesystem.load("data.lua")
-        data()
-    end
-
-    loadMap(saveData.currentLevel)
     _G.ui = urutora:new()
-    print("Game Loaded.")
 
-    local clickMe = ui.button({
-        text = 'Start Game',
-        x = love.graphics.getWidth() / 2,
-        y = 10,
-        w = 200,
-        h = 100
-    })
-
-    local num = 0
-    clickMe:action(function(e)
-        GameStart.gamestate = GameStart.GAMEPLAY
-        ui:remove(clickMe)
-    end)
-
-    ui:add(clickMe)
+    GameState.state = GameState.MAIN_MENU
+    initMainMenu()
+    GameStart:gameStart()
 end
 
 function love.update(dt)
@@ -69,6 +41,10 @@ end
 
 function love.mousepressed(x, y, button)
     ui:pressed(x, y, button)
+    if GameState.state == GameState.GAMEPLAY then
+        spawnFruit(x, y, 1, 9)
+    end
+
 end
 function love.mousemoved(x, y, dx, dy)
     ui:moved(x, y, dx, dy)
@@ -96,7 +72,15 @@ function spawnPlatform(x, y, width, height)
         table.insert(platforms, platform)
     end
 end
-
+function love.focus(f)
+    if f then
+        print("Window is focused.")
+        text = "FOCUSED"
+    else
+        print("Window is not focused.")
+        text = "UNFOCUSED"
+    end
+end
 function destroyAll()
 
 end

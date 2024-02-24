@@ -1,5 +1,3 @@
-projectiles = {}
-
 local scale = 5
 _G.fruitTypes = {{
     name = "cherry",
@@ -58,8 +56,8 @@ function spawnFruit(x, y, direction, fruitIndex)
     projectile.fruitType = fruitType
     projectile.fruitIndex = fruitIndex
 
-    projectile:setFriction(0.0001)
-    projectile:setRestitution(0.1)
+    projectile:setFriction(0.1002)
+    projectile:setRestitution(0)
     projectile.speed = 400
     projectile.dead = false
     projectile.direction = player.direction
@@ -70,31 +68,28 @@ function spawnFruit(x, y, direction, fruitIndex)
 end
 
 function updateFruit(dt)
+    local resetLimit = true
     for i = #projectiles, 1, -1 do
         local p = projectiles[i]
+        local px, py = p:getPosition()
 
-        if p:enter("Enemy") then
-            local collider = p:getEnterCollisionData("Enemy").collider
-            local enemy = collider.parent
-            print(collider)
-            enemy:hit(player.getAttackDamage(), "hit")
-            p.dead = true
+        -- Limiter Logic
+        local lx, ly = limiter:getPosition()
+        local fruitTopEdge = py - p:getRadius()
+        local limiterBottomEdge = ly + limiter.height / 2
+        if fruitTopEdge < limiterBottomEdge then
+            limiter.warningActive = true
+            resetLimit = false
         end
 
-        if p:enter("Projectile") then
-
-            local collider = p:getEnterCollisionData("Projectile").collider
-            local cx, cy = collider:getPosition()
-            local px, py = p:getPosition()
-            if collider:getRadius() == p:getRadius() and p.dead == false and py > cy and collider.fruitIndex <
-                #fruitTypes then
-                print(string.format("fruit merged %d into %d", p.fruitIndex, collider.fruitIndex))
-                spawnFruit(cx, cy, p.direction, collider.fruitIndex + 1)
-                collider.dead = true
-                p.dead = true
-            end
-        end
+        preciseCheckCollision(p)
     end
+
+    -- more limiter Logic
+    if resetLimit then
+        limiter.warningActive = false
+    end
+
     local i = #projectiles
     while i > 0 do
         if projectiles[i].dead then
@@ -105,21 +100,37 @@ function updateFruit(dt)
     end
 end
 
+-- We use this to check collisions because Windfield's collider :enter or :stay function isn't precise enough.
+function preciseCheckCollision(projectile)
+    for i, p in ipairs(projectiles) do
+        local minDistance = projectile:getRadius() + p:getRadius()
+        local p1x, p1y = projectile:getPosition()
+        local p2x, p2y = p:getPosition()
+        local distance = math.sqrt(math.pow(p1x - p2x, 2) + math.pow(p1y - p2y, 2))
+        if distance <= minDistance and distance > 0 then
+            local collider = p
+            local cx, cy = collider:getPosition()
+            if collider:getRadius() == projectile:getRadius() and projectile.dead == false and p1y > p2y and
+                collider.fruitIndex < #fruitTypes then
+                print(string.format("fruit merged %d into %d", projectile.fruitIndex, collider.fruitIndex))
+                setScore(player.score + projectile:getRadius())
+                spawnFruit(cx, cy, projectile.direction, collider.fruitIndex + 1)
+                collider.dead = true
+                projectile.dead = true
+                break
+            end
+        end
+    end
+end
+
 function drawFruit()
     for i, p in ipairs(projectiles) do
         local ax, ay = p:getPosition()
-        -- local sprW = sprites.projectile:getWidth()
-        -- local sprH = sprites.projectile:getHeight()
-
-        -- p.animation:draw(sprites.projectile, ax, ay, p.rotation, p.direction, 1, sprW / 2, sprH / 2)
-
         love.graphics.setColor(love.math.colorFromBytes(0, 0, 0))
-        love.graphics.circle("line", ax, ay, p:getRadius(), 17)
-
+        love.graphics.circle("line", ax, ay, p:getRadius(), 30)
         love.graphics.setColor(love.math
                                    .colorFromBytes(p.fruitType.color[1], p.fruitType.color[2], p.fruitType.color[3]))
-        love.graphics.circle("fill", ax, ay, p:getRadius(), 17)
-
+        love.graphics.circle("fill", ax, ay, p:getRadius(), 30)
         love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
     end
 end

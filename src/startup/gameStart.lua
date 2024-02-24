@@ -2,14 +2,10 @@ local GameStart = {}
 
 local function initGlobals()
     GameStart.data = {} -- save data, will be loaded after game begins
-
-    GameStart.MAIN_MENU = 0
-    GameStart.GAMEPLAY = 1
-    GameStart.PAUSE_MENU = 2
-    GameStart.GAME_OVER = 3
-
-    GameStart.gamestate = GameStart.MAIN_MENU
-    GameStart.globalStun = 0
+    _G.entities = {}
+    _G.platforms = {}
+    _G.limiter = nil
+    _G.projectiles = {}
 end
 
 local function setScale(input)
@@ -79,7 +75,6 @@ function GameStart:gameStart()
     require("lib/show")
     _G.anim8 = require("lib/anim8/anim8")
     _G.sti = require("lib/Simple-Tiled-Implementation/sti")
-    _G.urutora = require('lib/urutora/urutora')
     local windfield = require("lib/windfield/windfield")
     _G.world = windfield.newWorld(0, 2000, false)
     world:setQueryDebugDrawing(false)
@@ -88,9 +83,34 @@ function GameStart:gameStart()
     _G.particleWorld = windfield.newWorld(0, 250, false)
     particleWorld:setQueryDebugDrawing(true)
 
-    require("src/startup/require")
-    requireAll()
+    createCollisionClasses()
+    initPlayer()
+    createNewSave()
+    saveData = {}
+    saveData.currentLevel = "basemap"
+    if love.filesystem.getInfo("data.lua") then
+        local data = love.filesystem.load("data.lua")
+        data()
+    end
 
+    loadMap(saveData.currentLevel)
+end
+
+function GameStart:restart()
+    for i, p in ipairs(projectiles) do
+        p:destroy()
+    end
+    for i, p in ipairs(platforms) do
+        p:destroy()
+    end
+
+    GameStart.data = {} -- save data, will be loaded after game begins
+    _G.entities = {}
+    _G.platforms = {}
+    _G.limiter = nil
+    _G.projectiles = {}
+
+    loadMap(saveData.currentLevel)
 end
 
 local function reinitSize()

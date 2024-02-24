@@ -1,36 +1,42 @@
-playerStartX = 100
-playerStartY = 0
--- octagon shape
-player = world:newBSGRectangleCollider(playerStartX, playerStartY, 20, 50, 3, {
-    collision_class = "Player"
-})
+_G.player = {}
+print("WHAT THE FUCK")
+function initPlayer()
+    playerStartX = 100
+    playerStartY = 0
+    -- octagon shape
 
-player.spriteGrid = anim8.newGrid(64, 64, sprites.playerSheet:getWidth(), sprites.playerSheet:getHeight())
-player.animations = {}
-player.animations.idle = anim8.newAnimation(player.spriteGrid('1-1', 1), 0.1)
--- player.animations.run = anim8.newAnimation(player.spriteGrid('1-6', 1), 0.1)
--- player.animations.drop = anim8.newAnimation(player.spriteGrid('1-2', 3), 0.1)
+    player = world:newBSGRectangleCollider(playerStartX, playerStartY, 20, 50, 3, {
+        collision_class = "Player"
+    })
+    player.spriteGrid = anim8.newGrid(64, 64, sprites.playerSheet:getWidth(), sprites.playerSheet:getHeight())
+    player.animations = {}
+    player.animations.idle = anim8.newAnimation(player.spriteGrid('1-1', 1), 0.1)
+    -- player.animations.run = anim8.newAnimation(player.spriteGrid('1-6', 1), 0.1)
+    -- player.animations.drop = anim8.newAnimation(player.spriteGrid('1-2', 3), 0.1)
 
-player:setFixedRotation(true)
-player.height = 100
-player.speed = 540
-player.anim = player.animations.idle
-player.isMoving = false
-player.isAttacking = false
-player.direction = 1
-player.grounded = true
-player.projectileCooldownMax = 0.35
-player.projectileCooldown = player.projectileCooldownMax
-player.maxHealth = 100
-player.health = player.maxHealth
-player.attackMin = 4
-player.attackMax = 8
-player.isCastingSkill = false
-player.isColliding = true
-player.heldFruit = love.math.random(1, 5)
+    player:setFixedRotation(true)
+    player.height = 100
+    player.speed = 540
+    player.anim = player.animations.idle
+    player.isMoving = false
+    player.isAttacking = false
+    player.direction = 1
+    player.grounded = true
+    player.projectileCooldownMax = 0.35
+    player.projectileCooldown = player.projectileCooldownMax
+    player.maxHealth = 100
+    player.health = player.maxHealth
+    player.attackMin = 4
+    player.attackMax = 8
+    player.isCastingSkill = false
+    player.isColliding = true
+    player.heldFruit = love.math.random(1, 5)
+    player.score = 0
 
-player.tweenX = 0
-player.tweenY = 0
+    player.tweenX = 0
+    player.tweenY = 0
+
+end
 
 -- player:setPreSolve(function(collider_1, collider_2, contact)
 --     if collider_1.collision_class == 'Player' and collider_2.collision_class == 'Platform' then
@@ -61,7 +67,7 @@ function love.keypressed(key)
     end
 
 end
-function player:update(dt)
+function playerUpdate(dt)
     if player.body then
 
         player:setY(20)
@@ -154,9 +160,16 @@ end
 
 function resetPlayer()
     player.health = player.maxHealth
+    player.score = 0
 end
 
 function killPlayer()
     resetPlayer()
     player:setPosition(playerStartX, playerStartY)
 end
+
+function setScore(score)
+    player.score = score
+    setScoreLabel(player.score)
+end
+

@@ -21,6 +21,11 @@ function loadMap(mapName, destX, destY)
             spawnPlatform(obj.x, obj.y, obj.width, obj.height)
         end
     end
+    if gameMap.layers["Limit"] then
+        for i, obj in pairs(gameMap.layers["Limit"].objects) do
+            spawnLimiter(obj.x, obj.y, obj.width, obj.height)
+        end
+    end
     if gameMap.layers["Enemies"] then
         for i, obj in pairs(gameMap.layers["Enemies"].objects) do
             spawnEnemy(obj.x, obj.y, "DarkTree")

@@ -1,20 +1,22 @@
 local update = {}
 
 local function updateGame(dt)
-
+    print(world)
     world:update(dt)
     gameMap:update(dt)
-    player:update(dt)
+    playerUpdate(dt)
     actors:update(dt)
     fruitThrows:update(dt)
     updateFruit(dt)
+    updateLimiter(dt)
     flux.update(dt)
     cam:update(dt)
 end
 
 function update.updateAll(dt)
 
-    if GameStart.gamestate == GameStart.GAMEPLAY then
+    if GameState.state == GameState.GAMEPLAY then
+        print(GameState.GAMEPLAY)
         updateGame(dt)
     end
     GameStart:checkWindowSize()
