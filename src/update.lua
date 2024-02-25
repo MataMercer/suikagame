@@ -16,7 +16,6 @@ end
 function update.updateAll(dt)
 
     if GameState.state == GameState.GAMEPLAY then
-        print(GameState.GAMEPLAY)
         updateGame(dt)
     end
     GameStart:checkWindowSize()

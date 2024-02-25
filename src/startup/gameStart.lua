@@ -97,6 +97,7 @@ function GameStart:gameStart()
 end
 
 function GameStart:restart()
+    resetPlayer()
     for i, p in ipairs(projectiles) do
         p:destroy()
     end

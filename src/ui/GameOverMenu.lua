@@ -69,7 +69,6 @@ local function initPanel()
         text = 'Restart'
     }):action(function(e)
 
-        resetPlayer()
         -- GameStart:gameStart()
         GameStart:restart()
         GameState.state = GameState.GAMEPLAY
@@ -79,7 +78,7 @@ local function initPanel()
     :addAt(3, 1, ui.button({
         text = 'Title Screen'
     }):action(function(e)
-        resetPlayer()
+        GameStart:restart()
         GameState.state = GameState.MAIN_MENU
         destroyGameOverMenu()
         initMainMenu()

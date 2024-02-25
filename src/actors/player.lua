@@ -1,5 +1,4 @@
 _G.player = {}
-print("WHAT THE FUCK")
 function initPlayer()
     playerStartX = 100
     playerStartY = 0

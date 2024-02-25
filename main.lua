@@ -10,8 +10,8 @@ function love.load()
     _G.ui = urutora:new()
 
     GameState.state = GameState.MAIN_MENU
-    initMainMenu()
     GameStart:gameStart()
+    initMainMenu()
 end
 
 function love.update(dt)

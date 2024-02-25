@@ -54,7 +54,6 @@ function actors:update(dt)
         local a = self[i]
         a:update(dt)
         if a:isDead() then
-            print(a:isDead())
             a.physics:destroy()
             util.del(actors, i)
         end

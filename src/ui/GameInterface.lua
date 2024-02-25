@@ -19,7 +19,6 @@ local function initLeftPanel()
         elseif evt.type == 'empty' then
             destroyGameInterface()
             GameState.state = GameState.GAME_OVER
-            -- world:destroy()
             initGameOverMenu()
         end
     end)
