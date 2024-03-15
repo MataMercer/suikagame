@@ -1,5 +1,5 @@
 function destroyAll()
-    colliderTableDestroy(platforms)
+    colliderTableDestroy(Platforms)
     -- colliderTableDestroy(transitions)
 
     -- removeTable(loots)

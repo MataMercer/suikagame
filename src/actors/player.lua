@@ -133,16 +133,16 @@ function playerDraw()
     love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
     player.anim:draw(sprites.playerSheet, px, py, nil, player.direction, 1, 25, 35)
 
-    local p = _G.fruitTypes[player.heldFruit]
+    local p = _G.FruitTypes[player.heldFruit]
     px = px + (player.direction * 20)
     py = py + 30
-    love.graphics.setColor(love.math.colorFromBytes(0, 0, 0))
-    love.graphics.circle("line", px, py, p.radius, 17)
+    -- love.graphics.setColor(love.math.colorFromBytes(0, 0, 0))
+    -- love.graphics.circle("line", px, py, p.radius, 17)
 
-    love.graphics.setColor(love.math.colorFromBytes(p.color[1], p.color[2], p.color[3]))
-    love.graphics.circle("fill", px, py, p.radius, 17)
+    -- love.graphics.setColor(love.math.colorFromBytes(p.color[1], p.color[2], p.color[3]))
+    -- love.graphics.circle("fill", px, py, p.radius, 17)
 
-    love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
+    -- love.graphics.setColor(love.math.colorFromBytes(255, 255, 255))
 end
 
 function player:takeDamage()

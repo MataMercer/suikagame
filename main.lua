@@ -7,7 +7,7 @@ function love.load()
     require("src/startup/require")
     requireAll()
 
-    _G.ui = urutora:new()
+    _G.Ui = urutora:new()
 
     GameState.state = GameState.MAIN_MENU
     GameStart:gameStart()
@@ -16,7 +16,7 @@ end
 
 function love.update(dt)
 
-    ui:update(dt)
+    Ui:update(dt)
     update.updateAll(dt)
     -- local colliders = world:queryCircleArea(flagX, flagY, 10, { 'Player' })
     -- if #colliders > 0 then
@@ -36,30 +36,31 @@ function love.draw()
     draw.drawCamera()
 
     cam:detach()
-    ui:draw()
+    Ui:draw()
 end
 
 function love.mousepressed(x, y, button)
-    ui:pressed(x, y, button)
+    Ui:pressed(x, y, button)
     if GameState.state == GameState.GAMEPLAY then
-        spawnFruit(x, y, 1, 9)
+        spawnFruit(x, y, 1, 2)
+
     end
 
 end
 function love.mousemoved(x, y, dx, dy)
-    ui:moved(x, y, dx, dy)
+    Ui:moved(x, y, dx, dy)
 end
 function love.mousereleased(x, y, button)
-    ui:released(x, y)
+    Ui:released(x, y)
 end
 function love.textinput(text)
-    ui:textinput(text)
+    Ui:textinput(text)
 end
 function love.keypressed(k, scancode, isrepeat)
-    ui:keypressed(k, scancode, isrepeat)
+    Ui:keypressed(k, scancode, isrepeat)
 end
 function love.wheelmoved(x, y)
-    ui:wheelmoved(x, y)
+    Ui:wheelmoved(x, y)
 end
 
 function spawnPlatform(x, y, width, height)
@@ -69,7 +70,7 @@ function spawnPlatform(x, y, width, height)
         })
         platform:setType("static")
         platform:setFriction(0.1)
-        table.insert(platforms, platform)
+        table.insert(Platforms, platform)
     end
 end
 function love.focus(f)

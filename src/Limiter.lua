@@ -10,7 +10,7 @@ function spawnLimiter(x, y, width, height)
         -- l.warningTimeElapsed = 0
         -- l.warningTimeLimit = 1000
         -- l.alertThreshold = 0.2 * l.warningTimeLimit
-        limiter = l
+        Limiter = l
     end
 end
 
@@ -22,14 +22,13 @@ function updateLimiter(dt)
     --     print("GAME OVER!")
     --     GameStart.gamestate = GameStart.GAME_OVER
     -- end
-    if ui then
-        if limiter.warningActive == false then
-            cancelWarningBar() 
+    if Ui then
+        if Limiter.warningActive == false then
+            cancelWarningBar()
         else
             showWarningBar()
         end
-            
-            
+
     end
 
 end

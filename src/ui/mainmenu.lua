@@ -2,7 +2,7 @@ local mainMenuPanel
 local function initPanel()
     -- iNIT MAIN MENU PANEL
     local width = 600
-    return ui.panel({
+    return Ui.panel({
         x = love.graphics.getWidth() / 2 - width / 2,
         y = love.graphics.getHeight() / 2 - 100,
         w = width,
@@ -15,9 +15,9 @@ local function initPanel()
         -- bgColor = {0.2, 0.2, 0.7, 1},
         font = Fonts.robotoBold
     }):rowspanAt(1, 1):rowspanAt(2, 1):rowspanAt(3, 1) -- START BUTTON
-    :addAt(1, 1, ui.label({
+    :addAt(1, 1, Ui.label({
         text = "SUIKA GAME: LUA EDITION"
-    })):addAt(2, 1, ui.button({
+    })):addAt(2, 1, Ui.button({
         text = 'Start Game'
     }):action(function(e)
 
@@ -25,7 +25,7 @@ local function initPanel()
         destroyMainMenu()
         initGameInterface()
     end)) -- QUIT BUTTON
-    :addAt(3, 1, ui.button({
+    :addAt(3, 1, Ui.button({
         text = 'Quit'
     }):action(function(e)
         love.event.quit()
@@ -34,15 +34,15 @@ local function initPanel()
 end
 
 function initMainMenu()
-    ui.setDefaultFont(Fonts.proggySquare)
+    Ui.setDefaultFont(Fonts.proggySquare)
     mainMenuPanel = initPanel()
-    ui:add(mainMenuPanel)
+    Ui:add(mainMenuPanel)
 end
 
 function destroyMainMenu()
-    if ui and mainMenuPanel then
+    if Ui and mainMenuPanel then
 
-        ui:remove(mainMenuPanel)
+        Ui:remove(mainMenuPanel)
     end
 end
 

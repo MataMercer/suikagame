@@ -2,18 +2,18 @@ local progressBar, leftPanel, scoreLabel
 local progressBarSpeed = 2
 
 local function destroyGameInterface()
-    if ui and leftPanel then
-        ui:remove(leftPanel)
+    if Ui and leftPanel then
+        Ui:remove(leftPanel)
     end
 end
 local function initLeftPanel()
-    progressBar = ui.progressBar({
+    progressBar = Ui.progressBar({
         speed = 0,
         value = 1,
         direction = -1
     }):action(function(evt)
         if evt.type == 'full' then
-            if limiter.warningActive then
+            if Limiter.warningActive then
                 evt.target.speed = progressBarSpeed
             end
         elseif evt.type == 'empty' then
@@ -23,12 +23,12 @@ local function initLeftPanel()
         end
     end)
 
-    scoreLabel = ui.label({
+    scoreLabel = Ui.label({
         text = "Score: " .. player.score
     })
     -- Init left panel
     local width = 400
-    return ui.panel({
+    return Ui.panel({
         x = 0,
         y = love.graphics.getHeight() / 4 - 100,
         w = width,
@@ -48,9 +48,9 @@ end
 
 function initGameInterface()
 
-    ui.setDefaultFont(Fonts.proggySquare)
+    Ui.setDefaultFont(Fonts.proggySquare)
     leftPanel = initLeftPanel()
-    ui:add(leftPanel)
+    Ui:add(leftPanel)
 end
 
 function cancelWarningBar()
@@ -62,7 +62,7 @@ function cancelWarningBar()
 end
 
 function showWarningBar()
-    if progressBar and progressBar.value < limiter.visibleWarningThreshold then
+    if progressBar and progressBar.value < Limiter.visibleWarningThreshold then
         progressBar.visible = true
     end
 end

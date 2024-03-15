@@ -1,7 +1,6 @@
 local update = {}
 
 local function updateGame(dt)
-    print(world)
     world:update(dt)
     gameMap:update(dt)
     playerUpdate(dt)

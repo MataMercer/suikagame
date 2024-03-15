@@ -2,10 +2,10 @@ local GameStart = {}
 
 local function initGlobals()
     GameStart.data = {} -- save data, will be loaded after game begins
-    _G.entities = {}
-    _G.platforms = {}
-    _G.limiter = nil
-    _G.projectiles = {}
+    _G.Entities = {}
+    _G.Platforms = {}
+    _G.Limiter = nil
+    _G.Fruits = {}
 end
 
 local function setScale(input)
@@ -98,18 +98,18 @@ end
 
 function GameStart:restart()
     resetPlayer()
-    for i, p in ipairs(projectiles) do
+    for i, p in ipairs(Fruits) do
         p:destroy()
     end
-    for i, p in ipairs(platforms) do
+    for i, p in ipairs(Platforms) do
         p:destroy()
     end
 
     GameStart.data = {} -- save data, will be loaded after game begins
-    _G.entities = {}
-    _G.platforms = {}
-    _G.limiter = nil
-    _G.projectiles = {}
+    _G.Entities = {}
+    _G.Platforms = {}
+    _G.Limiter = nil
+    _G.Fruits = {}
 
     loadMap(saveData.currentLevel)
 end
