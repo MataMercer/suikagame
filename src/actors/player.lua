@@ -69,6 +69,8 @@ function love.keypressed(key)
 
             player.heldFruit = player.secondHeldFruit
             player.secondHeldFruit = generateHeldFruitIndex()
+
+            FruitEvoWheel:rotate(player.secondHeldFruit)
             RefreshNextFruitImage()
         end
     end
@@ -118,9 +120,6 @@ function playerUpdate(dt)
         if love.keyboard.isDown('left') then
             player.direction = -1
             player.isAttacking = false
-        end
-        if love.keyboard.isDown('z') then
-
         end
     end
 
@@ -195,7 +194,7 @@ function playerDraw()
     love.graphics.draw(p.spriteSheet, lineStartX, py, 0, player.direction * scale, scale, 32, 32)
 
     love.graphics.setColor(love.math.colorFromBytes(141, 171, 161, 150))
-    love.graphics.draw(p.spriteSheet, lineStartX, minY, 0, player.direction * scale, scale, 32, 32)
+    -- love.graphics.draw(p.spriteSheet, lineStartX, minY, 0, player.direction * scale, scale, 32, 32)
     -- love.graphics.setColor(love.math.colorFromBytes(p.color[1], p.color[2], p.color[3]))
     -- love.graphics.circle("fill", px, py, p.radius, 17)
 
@@ -217,6 +216,7 @@ end
 function resetPlayer()
     player.health = player.maxHealth
     player.score = 0
+    player.isCastingSkill = false
 end
 
 function killPlayer()

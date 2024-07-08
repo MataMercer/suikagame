@@ -1,5 +1,8 @@
 fruitThrows = {}
 function spawnFruitThrow(actor)
+    if GameState.state ~= GameState.GAMEPLAY then
+        return
+    end
     local ax, ay = actor:getPosition()
     local shurikenThrow = {}
     shurikenThrow.x = ax
@@ -12,7 +15,7 @@ function spawnFruitThrow(actor)
     shurikenThrow.timeElapsed = 0
     shurikenThrow.numberOfStarsThrown = 3
     shurikenThrow.frequency = (shurikenThrow.duration - shurikenThrow.castingDelayDuration) /
-                                  shurikenThrow.numberOfStarsThrown
+        shurikenThrow.numberOfStarsThrown
     shurikenThrow.timeSinceLastThrow = 0
     shurikenThrow.shurikens = {}
     shurikenThrow.actor = actor
@@ -40,7 +43,6 @@ function fruitThrows:update(dt)
             table.remove(fruitThrows, i)
         end
     end
-
 end
 
 function fruitThrows.draw()

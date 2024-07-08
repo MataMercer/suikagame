@@ -4,7 +4,8 @@ end
 
 function draw.drawCamera()
     -- love.graphics.setColor(love.math.colorFromBytes(139, 172, 15))
-    if GameState.state == GameState.GAMEPLAY then
+    if GameState.state == GameState.GAMEPLAY or GameState.state == GameState.CUTSCENE then
+        FruitEvoWheel:draw()
         gameMap:drawLayer(gameMap.layers["Tile Layer 1"])
         love.graphics.setColor(1, 1, 1)
 

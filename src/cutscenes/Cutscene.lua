@@ -7,8 +7,9 @@ function Cutscene:resetCutscene()
     Cutscene.isInitialized = true
 end
 
-function Cutscene:startCutscene(cutsceneSequence)
+function Cutscene:startCutscene(cutsceneSequence, callback)
     self:resetCutscene()
+    table.insert(cutsceneSequence, callback)
     Cutscene.sequence = cutsceneSequence
 end
 

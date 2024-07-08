@@ -13,6 +13,7 @@ function love.load()
     GameStart:gameStart()
     -- initMainMenu()
     Cutscene:startCutscene(LogoCutsceneSeq)
+    GrayScaleShader = love.graphics.newShader('src/shaders/grayscale.glsl')
 end
 
 function love.update(dt)

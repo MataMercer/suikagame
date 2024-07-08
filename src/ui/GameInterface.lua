@@ -1,5 +1,5 @@
 local progressBar, leftPanel, rightPanel, scoreLabel, nextFruitImage
-local progressBarSpeed = 0.3
+local progressBarSpeed = 2
 
 local function destroyGameInterface()
     if Ui and leftPanel and rightPanel then
@@ -18,10 +18,15 @@ local function initLeftPanel()
                 if Limiter.warningActive then
                     evt.target.speed = progressBarSpeed
                 end
-            elseif evt.type == 'empty' then
-                GameState.state = GameState.GAME_OVER
-                initGameOverMenu()
-                destroyGameInterface()
+            elseif evt.type == 'empty' and GameState.state == GameState.GAMEPLAY then
+                print("Iniating Gameover Sequence")
+                local gameOverCutsceneSeq = InitGameOverCutscene()
+                GameState.state = GameState.CUTSCENE
+                Cutscene:startCutscene(gameOverCutsceneSeq, function()
+                    GameState.state = GameState.GAME_OVER
+                    initGameOverMenu()
+                    destroyGameInterface()
+                end)
             end
         end)
 
@@ -80,10 +85,10 @@ function initRightPanel()
         :rowspanAt(1, 1)
         :rowspanAt(2, 1)
         :rowspanAt(3, 1)
-        :addAt(2, 1, Ui.label({
-            text = "Next Fruit:"
-        }))
-        :addAt(3, 1, nextFruitImage)
+    -- :addAt(2, 1, Ui.label({
+    --     text = "Next Fruit:"
+    -- }))
+    -- :addAt(3, 1, nextFruitImage)
 end
 
 function initGameInterface()

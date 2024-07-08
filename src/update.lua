@@ -1,7 +1,9 @@
 local update = {}
 
 local function updateGame(dt)
-    world:update(dt)
+    if GameState.state == GameState.GAMEPLAY then
+        world:update(dt)
+    end
     particleWorld:update(dt)
     gameMap:update(dt)
     playerUpdate(dt)
@@ -10,12 +12,13 @@ local function updateGame(dt)
     updateFruit(dt)
     updateLimiter(dt)
     UpdateMergeEffects(dt)
+    FruitEvoWheel:update(dt)
     flux.update(dt)
     cam:update(dt)
 end
 
 function update.updateAll(dt)
-    if GameState.state == GameState.GAMEPLAY then
+    if GameState.state == GameState.GAMEPLAY or GameState.state == GameState.CUTSCENE then
         updateGame(dt)
     end
     GameStart:checkWindowSize()
