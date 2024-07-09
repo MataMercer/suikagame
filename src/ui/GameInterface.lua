@@ -85,10 +85,10 @@ function initRightPanel()
         :rowspanAt(1, 1)
         :rowspanAt(2, 1)
         :rowspanAt(3, 1)
-    -- :addAt(2, 1, Ui.label({
-    --     text = "Next Fruit:"
-    -- }))
-    -- :addAt(3, 1, nextFruitImage)
+        :addAt(2, 1, Ui.label({
+            text = "Next Fruit:"
+        }))
+        :addAt(3, 1, nextFruitImage)
 end
 
 function initGameInterface()
