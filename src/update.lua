@@ -12,7 +12,10 @@ local function updateGame(dt)
     updateFruit(dt)
     updateLimiter(dt)
     UpdateMergeEffects(dt)
+
+    --Custom Ui Components
     FruitEvoWheel:update(dt)
+
     flux.update(dt)
     cam:update(dt)
 end

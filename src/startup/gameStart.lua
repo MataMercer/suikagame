@@ -65,12 +65,12 @@ function GameStart:gameStart()
     self.fullscreen = false
     self.testWindow = false
     self.vertical = false
-    setWindowSize(self.fullscreen, 1920, 1080)
+    setWindowSize(self.fullscreen, 1600, 1080)
 
     if self.vertical then
         self.fullscreen = false
         testWindow = true
-        setWindowSize(self.fullscreen, 1280, 720)
+        setWindowSize(self.fullscreen, 800, 600)
     end
 
     -- The game's graphics scale up, this method finds the right ratio

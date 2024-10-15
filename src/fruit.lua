@@ -5,9 +5,11 @@ _G.ComboTimeLimit = 2
 _G.ComboTimeElapsed = 0
 _G.Combos = {}
 
+_G.FruitSpawnPoints = {}
+
 local function preprocessFruitPolygonVertices()
     local polygonLimit = 8
-    for i, f in ipairs(FruitTypes) do
+    for _, f in ipairs(FruitTypes) do
         local spriteImageData = love.image.newImageData(f.spritePath)
         if f.shape == "polygon" then
             local absolutePoints = findPolygonMaskFromImage(spriteImageData, polygonLimit)
@@ -19,7 +21,6 @@ local function preprocessFruitPolygonVertices()
         f.color = findMostOccurringColor(spriteImageData)
     end
 end
-
 preprocessFruitPolygonVertices()
 
 local function ComboCheck(x, y)
@@ -37,6 +38,7 @@ local function ComboCheck(x, y)
         ComboTimeElapsed = 0
     end
 end
+
 
 function spawnFruit(x, y, direction, fruitIndex)
     local throwPosX = x
@@ -61,12 +63,6 @@ function spawnFruit(x, y, direction, fruitIndex)
         })
     elseif fruitType.shape == "polygon" then
         local verts = fruitType.polygonVertices
-        -- for i, v in ipairs(verts) do
-        --     verts[i] = {
-        --         x = v.x - x,
-        --         y = v.y - y
-        --     }
-        -- end
         local coords = flattenCoordList(verts)
         fruit = world:newPolygonCollider(coords, {
             collision_class = "Projectile"
@@ -96,15 +92,54 @@ function spawnFruit(x, y, direction, fruitIndex)
     fruit.id = FruitCounter
     fruit.rotation = nil
 
+    fruit:setPreSolve(function(collider1, collider2, contact)
+        local f1 = collider1.fruitType
+        local f2 = collider2.fruitType
+
+        if not (f1 and f2 and f1.radius == f2.radius and collider1.dead == false and collider2.dead == false) then
+            return
+        end
+
+        local c2x, c2y = collider2:getPosition()
+        local c1x, c1y = collider1:getPosition()
+
+        local spawnX, spawnY = c2x, c2y
+        if f1.shape == "polygon" then
+            local centroid = findCentroidPoint(unflattenCoordList({ collider1:getPoints() }))
+            local centroidx, centroidy = centroid.x, centroid.y
+
+            local angle = collider2:getAngle()
+            local rotatedx = centroidx * math.cos(angle) - centroidy * math.sin(angle)
+            local rotatedy = centroidy * math.cos(angle) + centroidx * math.sin(angle)
+            spawnX, spawnY = spawnX + rotatedx, spawnY + rotatedy
+        end
+
+        if collider2.fruitIndex + 1 < #FruitTypes then
+            table.insert(FruitSpawnPoints,
+                { x = spawnX, y = spawnY, direction = collider2.direction, fruitIndex = collider2.fruitIndex + 1 })
+        end
+        setScore(player.score + collider2.fruitType.radius)
+        collider2.dead = true
+        collider1.dead = true
+        SpawnMergeEffect(c1x, c1y, 5, collider1.fruitType.color)
+        ComboCheck(spawnX, spawnY)
+
+        -- print(string.format("%d merged with %d ", collider2.id, collider1.id))
+    end)
+
     table.insert(Fruits, fruit)
 end
 
 function updateFruit(dt)
+    for index, spawn in ipairs(FruitSpawnPoints) do
+        spawnFruit(spawn.x, spawn.y, spawn.direction, spawn.fruitIndex)
+    end
+    FruitSpawnPoints = {}
+
     local resetLimit = true
     for i = #Fruits, 1, -1 do
         local p = Fruits[i]
         local px, py = p:getPosition()
-
 
         -- Limiter Logic
         local lx, ly = Limiter:getPosition()
@@ -126,36 +161,6 @@ function updateFruit(dt)
             end
         end
         p.anim:update(dt)
-        if enableFruitMerging then
-            preciseCheckCollision(p)
-
-            if p.fruitType.shape == "polygon" and (p:enter("Projectile") or p:stay("Projectile")) then
-                local collider = p:getEnterCollisionData("Projectile").collider
-                if collider and collider.dead == false then
-                    local cx, cy = collider:getPosition()
-                    local px, py = p:getPosition()
-                    if collider.fruitType.name == p.fruitType.name and p.dead == false and py > cy then
-                        local centroid = findCentroidPoint(unflattenCoordList({ collider:getPoints() }))
-                        local centroidx, centroidy = centroid.x, centroid.y
-
-                        local angle = p:getAngle()
-                        local rotatedx = centroidx * math.cos(angle) - centroidy * math.sin(angle)
-                        local rotatedy = centroidy * math.cos(angle) + centroidx * math.sin(angle)
-
-                        --Watermelons disappear when merged.
-                        if collider.fruitIndex + 1 < #FruitTypes then
-                            spawnFruit(cx + rotatedx, cy + rotatedy, p.direction, collider.fruitIndex + 1)
-                        end
-                        setScore(player.score + p.fruitType.radius)
-                        collider.dead = true
-                        p.dead = true
-                        print(string.format("%d merged with %d ", collider.id, p.id))
-                        SpawnMergeEffect(px, py, 5, p.fruitType.color)
-                        ComboCheck(cx + rotatedx, cy + rotatedy)
-                    end
-                end
-            end
-        end
     end
 
     -- more limiter Logic
@@ -176,56 +181,10 @@ function updateFruit(dt)
     ComboTimeElapsed = ComboTimeElapsed + dt
 end
 
--- We use this to check collisions because Windfield's collider :enter or :stay function isn't precise enough.
-function preciseCheckCollision(fruit)
-    for i, p in ipairs(Fruits) do
-        local p1x, p1y = fruit:getPosition()
-        local p2x, p2y = p:getPosition()
-        if p.fruitType.shape == "circle" then
-            local minDistance = fruit:getRadius() + p:getRadius()
-            local distance = math.sqrt(math.pow(p1x - p2x, 2) + math.pow(p1y - p2y, 2)) - 5
-            if distance <= minDistance and distance > 0 then
-                local collider = p
-                local cx, cy = collider:getPosition()
-                if collider:getRadius() == fruit:getRadius() and fruit.dead == false and p1y > p2y and
-                    collider.fruitIndex < #FruitTypes then
-                    setScore(player.score + fruit:getRadius())
-                    spawnFruit(cx, cy, fruit.direction, collider.fruitIndex + 1)
-                    collider.dead = true
-                    fruit.dead = true
-                    local pitch = .5 + math.random() * .5
-
-                    SpawnMergeEffect(cx, cy, 5, collider.fruitType.color)
-                    ComboCheck(cx, cy)
-                    break
-                end
-            end
-        elseif p.fruitType.shape == "polygon" and fruit.fruitType.polygonVertices then
-            -- local fruitRelativePoints = util.getRelativePolygonVertices(fruit)
-            -- local pRelativePoints = util.getRelativePolygonVertices(p)
-
-            -- if p1x ~= p2x and p1y ~= p2y and util.preciseCheckPolygonCollision(fruitRelativePoints, pRelativePoints) then
-            --     if p.fruitType.radius == fruit.fruitType.radius and fruit.dead == false and p1y > p2y and p.fruitIndex <
-            --         #FruitTypes then
-            --         setScore(player.score + fruit.fruitType.radius)
-
-            --         local centroid = findCentroidPoint(unflattenCoordList({p:getPoints()}))
-            --         spawnFruit(p1x, p1y, p.direction, p.fruitIndex + 1)
-            --         p.dead = true
-            --         fruit.dead = true
-            --         break
-            --     end
-
-            -- end
-        end
-    end
-end
-
 function drawFruit()
     for i, p in ipairs(Fruits) do
         local ax, ay = p:getPosition()
         local radius = p.fruitType.radius
-        -- love.graphics.setColor(love.math.colorFromBytes(0, 0, 0))
 
         LgUtil.resetColor()
         -- love.graphics.setColor(love.math
@@ -275,8 +234,6 @@ function drawFruit()
         -- love.graphics.circle("fill", Bounds.x, Bounds.y, 3, 10)
         -- love.graphics.circle("fill", Bounds.x + Bounds.width, Bounds.y + Bounds.height, 3, 10)
     end
-
-
 
     for index, c in ipairs(Combos) do
         LgUtil.setColor(255, 255, 255, c.alpha)

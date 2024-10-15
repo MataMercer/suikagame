@@ -1,5 +1,5 @@
 package.path = '../?.lua;' .. package.path
-local Matrix = require('../utilities/matrix')
+local Matrix = require('src.utilities.math.matrix')
 
 print("Begin tests...")
 

@@ -1,5 +1,5 @@
 local progressBar, leftPanel, rightPanel, scoreLabel, nextFruitImage
-local progressBarSpeed = 2
+local progressBarSpeed = 3
 
 local function destroyGameInterface()
     if Ui and leftPanel and rightPanel then
@@ -7,7 +7,16 @@ local function destroyGameInterface()
         Ui:remove(rightPanel)
     end
 end
-local function initLeftPanel()
+function initRightPanel()
+    nextFruitImage = Ui.image({
+        image = FruitTypes[player.secondHeldFruit].spriteSheet,
+        x = 0,
+        y = 0,
+        w = 64,
+        h = 64,
+        keepAspectRatio = true
+    })
+
     progressBar = Ui.progressBar({
             speed = 0,
             value = 1,
@@ -18,8 +27,9 @@ local function initLeftPanel()
                 if Limiter.warningActive then
                     evt.target.speed = progressBarSpeed
                 end
-            elseif evt.type == 'empty' and GameState.state == GameState.GAMEPLAY then
-                print("Iniating Gameover Sequence")
+            elseif progressBar.value == 0 and GameState.state == GameState.GAMEPLAY then
+                print(progressBar.value)
+                print("Initiating Gameover Sequence")
                 local gameOverCutsceneSeq = InitGameOverCutscene()
                 GameState.state = GameState.CUTSCENE
                 Cutscene:startCutscene(gameOverCutsceneSeq, function()
@@ -33,49 +43,15 @@ local function initLeftPanel()
     scoreLabel = Ui.label({
         text = "Score: " .. player.score
     })
-    -- Init left panel
-    local width = 400
+
+    local width = 600
     return Ui.panel({
-            x = love.graphics.getWidth() / 4 - width,
+            x = love.graphics.getWidth() / 2 + love.graphics.getWidth() / 8,
             y = love.graphics.getHeight() / 4 - 100,
             w = width,
-            h = 1000,
+            h = 700,
             -- debug = true,
-            rows = 8,
-            cols = 1,
-            verticalScale = 2,
-            tag = 'panelc',
-            -- bgColor = {0.2, 0.2, 0.7, 1},
-            font = Fonts.robotoBold
-        })
-        :rowspanAt(1, 1)
-        :rowspanAt(2, 1)
-        :rowspanAt(3, 1)          -- Warning time limit indicator.
-        :addAt(1, 1, progressBar) -- Show score
-        :addAt(2, 1, scoreLabel)
-        :addAt(3, 1, Ui.label({
-            text = "[Z] to drop fruit"
-        }))
-end
-
-function initRightPanel()
-    nextFruitImage = Ui.image({
-        image = FruitTypes[player.secondHeldFruit].spriteSheet,
-        x = 0,
-        y = 0,
-        w = 64,
-        h = 64,
-        keepAspectRatio = true
-    })
-
-    local width = 500
-    return Ui.panel({
-            x = love.graphics.getWidth() / 2 + love.graphics.getWidth() / 4,
-            y = love.graphics.getHeight() / 4 - 100,
-            w = width,
-            h = 1000,
-            -- debug = true,
-            rows = 8,
+            rows = 5,
             cols = 1,
             verticalScale = 2,
             tag = 'paneld',
@@ -85,19 +61,22 @@ function initRightPanel()
         :rowspanAt(1, 1)
         :rowspanAt(2, 1)
         :rowspanAt(3, 1)
+        :rowspanAt(4, 1)
+        :rowspanAt(5, 1)
+        :addAt(1, 1, progressBar)
         :addAt(2, 1, Ui.label({
             text = "Next Fruit:"
         }))
         :addAt(3, 1, nextFruitImage)
+        :addAt(4, 1, scoreLabel)
+        :addAt(5, 1, Ui.label({
+            text = "[Z] to drop fruit"
+        }))
 end
 
 function initGameInterface()
     Ui.setDefaultFont(Fonts.proggySquare)
-    leftPanel = initLeftPanel()
-    Ui:add(leftPanel)
-
     rightPanel = initRightPanel()
-    -- print(rightPanel)
     Ui:add(rightPanel)
     Ui:setStyle(UiCustomStyle)
 end

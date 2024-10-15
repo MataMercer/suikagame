@@ -7,7 +7,6 @@ function loadMap(mapName, destX, destY)
 
     loadedMap = mapName
     gameMap = sti("maps/" .. mapName .. ".lua")
-    print('map loaded')
 
     if gameMap.layers["Start"] then
         for i, obj in pairs(gameMap.layers["Start"].objects) do
@@ -47,4 +46,5 @@ function loadMap(mapName, destX, destY)
             flagY = obj.y
         end
     end
+    print('map loaded')
 end

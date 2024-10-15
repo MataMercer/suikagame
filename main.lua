@@ -49,7 +49,7 @@ end
 function love.mousepressed(x, y, button)
     Ui:pressed(x, y, button)
     if GameState.state == GameState.GAMEPLAY then
-        spawnFruit(x, y, 1, 9)
+        spawnFruit(x, y, 1, 2)
         -- SpawnMergeEffect(x, y, 5, { 255, 1, 1 })
     end
 end
