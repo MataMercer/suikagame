@@ -65,12 +65,12 @@ function GameStart:gameStart()
     self.fullscreen = false
     self.testWindow = false
     self.vertical = false
-    setWindowSize(self.fullscreen, 1600, 1080)
+    setWindowSize(self.fullscreen, 1000, 1000)
 
     if self.vertical then
         self.fullscreen = false
         testWindow = true
-        setWindowSize(self.fullscreen, 800, 600)
+        setWindowSize(self.fullscreen, 800, 800)
     end
 
     -- The game's graphics scale up, this method finds the right ratio
@@ -106,6 +106,10 @@ function GameStart:gameStart()
 end
 
 function GameStart:restart()
+    if player.score > player.highScore then
+        player.highScore = player.score
+    end
+
     resetPlayer()
     for i, p in ipairs(Fruits) do
         p:destroy()

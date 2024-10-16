@@ -1,23 +1,25 @@
 local mainMenuPanel
 local function initPanel()
     -- INIT MAIN MENU PANEL
-    local width = 600
+    local width = love.graphics.getWidth() * 0.8
     return Ui.panel({
             x = love.graphics.getWidth() / 2 - width / 2,
-            y = love.graphics.getHeight() / 2 - 100,
+            y = love.graphics.getHeight() / 4 - 100,
             w = width,
             h = 1000,
             -- debug = true,
             rows = 8,
-            cols = 1,
+            cols = 3,
             verticalScale = 1,
             tag = 'panelc',
             -- bgColor = { 0.2, 0.2, 0.7, 1 },
             font = Fonts.robotoBold
         })
-        :rowspanAt(1, 1)
-        :rowspanAt(2, 1)
-        :rowspanAt(3, 1)
+        :rowspanAt(1, 1, 3)
+        :colspanAt(1, 1, 3)
+        :rowspanAt(4, 1)
+        :rowspanAt(5, 1)
+        :rowspanAt(6, 1)
 
         --Title
         :addAt(1, 1, Ui.image({
@@ -29,9 +31,7 @@ local function initPanel()
             keepAspectRatio = true
         }))
 
-
-        -- Start Button
-        :addAt(2, 1, Ui.button({
+        :addAt(4, 2, Ui.button({
                 text = 'Start Game',
             })
             :action(function(e)
@@ -41,8 +41,7 @@ local function initPanel()
                 initGameInterface()
             end))
 
-        --Settings Button
-        :addAt(3, 1, Ui.button({
+        :addAt(5, 2, Ui.button({
                 text = 'Settings'
             })
             :action(function(e)
@@ -50,8 +49,7 @@ local function initPanel()
             end))
 
 
-        -- Quit Button
-        :addAt(4, 1, Ui.button({
+        :addAt(6, 2, Ui.button({
                 text = 'Quit'
             })
             :action(function(e)

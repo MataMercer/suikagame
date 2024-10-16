@@ -17,7 +17,7 @@ UiCustomStyle = {
     },
     -- progressBarGooColor = { 0, 1, 0, 0.7 },
     cornerRadius = 0,
-    fgColor = { love.math.colorFromBytes(210, 201, 165) },
+    fgColor = { love.math.colorFromBytes(255, 255, 255) },
     hoverFgColor = { love.math.colorFromBytes(75, 114, 110) },
     pressedFgColor = { love.math.colorFromBytes(140, 171, 161) },
     disableFgColor = { 0.2, 0.2, 0.2 },

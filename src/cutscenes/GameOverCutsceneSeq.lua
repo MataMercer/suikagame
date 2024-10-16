@@ -3,7 +3,7 @@ function InitGameOverCutscene()
     table.insert(gameOverCutsceneSeq, function()
         love.graphics.setShader(GrayScaleShader)
         comboManager:destroy()
-        Cutscene:wait(1, true)
+        Cutscene:wait(0.5, true)
         return true
     end)
 
@@ -23,7 +23,7 @@ function InitGameOverCutscene()
                 end
             end)
             table.insert(gameOverCutsceneSeq, function()
-                Cutscene:wait(0.2, true)
+                Cutscene:wait(0.1, true)
                 return true
             end)
         end

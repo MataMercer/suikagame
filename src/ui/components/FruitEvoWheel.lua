@@ -2,8 +2,8 @@ _G.FruitEvoWheel = {}
 
 FruitEvoWheel.x = love.graphics.getWidth() / 2 + love.graphics.getWidth() / 4
 FruitEvoWheel.y = 500
-FruitEvoWheel.scale = 1
-FruitEvoWheel.radius = 100
+FruitEvoWheel.scale = 0.7
+FruitEvoWheel.radius = 100 * FruitEvoWheel.scale
 FruitEvoWheel.rotationAngleIncrement = 2 * math.pi / #FruitTypes
 FruitEvoWheel.index = 1
 FruitEvoWheel.fruitCount = #FruitTypes
@@ -40,9 +40,15 @@ end
 function FruitEvoWheel:draw()
   -- love.graphics.circle("line", self.x, self.y, 100, #FruitTypes)
   for index, p in ipairs(self.points) do
-    love.graphics.draw(FruitTypes[index].spriteSheet, p.x, p.y, 0, 0.5, 0.5, 32, 32)
     if index == player.secondHeldFruit and FruitEvoWheel.index then
-      love.graphics.circle("line", p.x, p.y, 15, #FruitTypes)
+      love.graphics.circle("fill", p.x, p.y, 30, #FruitTypes)
+    end
+    love.graphics.draw(FruitTypes[index].spriteSheet, p.x, p.y, 0, self.scale, self.scale, 32, 32)
+  end
+  for index, p in ipairs(self.points) do
+    if index == player.secondHeldFruit and FruitEvoWheel.index then
+      love.graphics.circle("fill", p.x, p.y, 30, #FruitTypes)
+      love.graphics.draw(FruitTypes[index].spriteSheet, p.x, p.y, 0, self.scale, self.scale, 32, 32)
     end
   end
 end

@@ -1,9 +1,8 @@
-local progressBar, leftPanel, rightPanel, scoreLabel, nextFruitImage
+local progressBar, rightPanel, scoreLabel, nextFruitImage
 local progressBarSpeed = 0.5
 
 local function destroyGameInterface()
-    if Ui and leftPanel and rightPanel then
-        Ui:remove(leftPanel)
+    if Ui and rightPanel then
         Ui:remove(rightPanel)
     end
 end
@@ -32,33 +31,29 @@ function initRightPanel()
         end)
 
     scoreLabel = Ui.label({
-        text = "Score: " .. player.score
+        text = "Score: " .. player.score,
     })
 
-    local width = 600
+    local width = love.graphics.getWidth() / 3
     return Ui.panel({
-            x = love.graphics.getWidth() / 2 + love.graphics.getWidth() / 8,
+            x = (love.graphics.getWidth() / 1) - love.graphics.getWidth() / 3,
             y = love.graphics.getHeight() / 4 - 100,
             w = width,
-            h = 700,
+            h = 800,
             -- debug = true,
             rows = 5,
             cols = 1,
-            verticalScale = 2,
+            verticalScale = 1,
             tag = 'paneld',
             -- bgColor = {0.2, 0.2, 0.7, 1},
             font = Fonts.robotoBold
         })
         :rowspanAt(1, 1)
-        :rowspanAt(2, 1)
-        :rowspanAt(3, 1)
+        :rowspanAt(2, 1, 2)
         :rowspanAt(4, 1)
         :rowspanAt(5, 1)
         :addAt(1, 1, progressBar)
-        :addAt(2, 1, scoreLabel)
-        :addAt(3, 1, Ui.label({
-            text = "[Z] to drop fruit"
-        }))
+        :addAt(2, 1, scoreLabel:center())
 end
 
 function initGameInterface()
@@ -84,8 +79,4 @@ end
 
 function setScoreLabel(score)
     scoreLabel.text = "Score: " .. score
-end
-
-function RefreshNextFruitImage()
-    nextFruitImage.image = FruitTypes[player.secondHeldFruit].spriteSheet
 end

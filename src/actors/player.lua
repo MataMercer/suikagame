@@ -37,6 +37,7 @@ function initPlayer()
     player.heldFruit = generateHeldFruitIndex()
     player.secondHeldFruit = generateHeldFruitIndex()
     player.score = 0
+    player.highScore = 0
 
     player.tweenX = 0
     player.tweenY = 0

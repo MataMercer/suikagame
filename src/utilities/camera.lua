@@ -13,7 +13,7 @@ function cam:update(dt)
     local mapW = gameMap.width * gameMap.tilewidth
     local mapH = gameMap.height * gameMap.tileheight
 
-    cam:lockPosition(w / 2 - w / 4, mapH / 2)
+    cam:lockPosition(w / 2, mapH / 2)
 
     -- cam.x and cam.y keep track of where the camera is located
     -- the lookAt value may be moved if a screenshake is happening, so these
