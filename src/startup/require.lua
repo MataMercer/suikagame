@@ -4,6 +4,8 @@ function requireAll()
 
     -- Load assets, resources, data
     require("src/startup/resources")
+    require("src/utilities/class")
+    require("src/mechanics/ComboManager")
     require("src/startup/GameState")
     require("src/startup/data")
     require("src/utilities/camera")

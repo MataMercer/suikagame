@@ -90,6 +90,8 @@ function GameStart:gameStart()
     _G.particleWorld = windfield.newWorld(0, 250, false)
     particleWorld:setQueryDebugDrawing(true)
 
+    _G.comboManager = ComboManager:new()
+
     createCollisionClasses()
     initPlayer()
     createNewSave()

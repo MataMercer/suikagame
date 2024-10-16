@@ -71,7 +71,6 @@ function love.keypressed(key)
             player.secondHeldFruit = generateHeldFruitIndex()
 
             FruitEvoWheel:rotate(player.secondHeldFruit)
-            RefreshNextFruitImage()
         end
     end
 end
@@ -191,7 +190,7 @@ function playerDraw()
         scale = p.scaleTarget
     end
 
-    love.graphics.draw(p.spriteSheet, lineStartX, py, 0, player.direction * scale, scale, 32, 32)
+    love.graphics.draw(p.spriteSheet, lineStartX, py, 0, player.direction * 1 / 2, 1 / 2, 32, 32)
 
     love.graphics.setColor(love.math.colorFromBytes(141, 171, 161, 150))
     love.graphics.draw(p.spriteSheet, lineStartX, minY - 32 * scale, 0, player.direction * scale, scale, 32, 32)

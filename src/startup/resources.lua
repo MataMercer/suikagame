@@ -7,7 +7,9 @@ sprites.title = love.graphics.newImage('sprites/title.png')
 sprites.title:setFilter("nearest", "nearest")
 sprites.logo = love.graphics.newImage('sprites/logo.png')
 sprites.mergeParticle = love.graphics.newImage('sprites/mergeParticles.png')
+sprites.comboEffect = love.graphics.newImage('sprites/combo-sheet.png')
 
+sprites.comboEffect:setFilter("nearest", "nearest")
 --ui
 sprites.bgButton = love.graphics.newImage('sprites/BgButton.png')
 sprites.bgButton:setFilter("nearest", "nearest")

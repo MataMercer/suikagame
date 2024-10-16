@@ -68,14 +68,12 @@ local function initPanel()
         }):rowspanAt(1, 1):rowspanAt(2, 1):rowspanAt(3, 1):addAt(1, 1, scoreLabel):addAt(2, 1, Ui.button({
             text = 'Restart'
         }):action(function(e)
-            -- GameStart:gameStart()
-
             TEsound.play(sounds.click, "static")
             GameStart:restart()
             GameState.state = GameState.GAMEPLAY
             destroyGameOverMenu()
             initGameInterface()
-        end)) -- QUIT BUTTON
+        end))
         :addAt(3, 1, Ui.button({
             text = 'Title Screen'
         }):action(function(e)

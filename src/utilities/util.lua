@@ -12,14 +12,14 @@ function util.findNearestCollider(subjectCol, colTargetClass)
     end
 
     local nearbyCols = world:queryRectangleArea(queryXPos, sy - queryHeight / 2, queryWidth, queryHeight,
-        {colTargetClass})
+        { colTargetClass })
     local closestIndex = 1
     local closestDistance = math.sqrt(queryWidth ^ 2 + queryHeight ^ 2)
     for i, c in ipairs(nearbyCols) do
         local cx, cy = c:getPosition()
         local dist = util.distanceBetween(cx, cy, sx, sy)
         if dist < closestDistance then
-            local platformCol = world:queryLine(sx, sy, cx, cy, {'Platform'})
+            local platformCol = world:queryLine(sx, sy, cx, cy, { 'Platform' })
             if #platformCol == 0 then
                 closestIndex = i
                 closestDistance = dist
@@ -67,7 +67,6 @@ end
 
 function printPoint(p)
     if p ~= nil then
-
         print(string.format("x: %d , y: %d", p.x, p.y))
     else
         print("nil")
@@ -76,15 +75,14 @@ end
 
 function util.perpendicularDistance(point, lineStartPoint, lineEndPoint)
     local numerator = math.abs((lineEndPoint.x - lineStartPoint.x) * (lineStartPoint.y - point.y) -
-                                   (lineStartPoint.x - point.x) * (lineEndPoint.y - lineStartPoint.y))
+        (lineStartPoint.x - point.x) * (lineEndPoint.y - lineStartPoint.y))
     local denominator = math.sqrt(math.pow(lineEndPoint.x - lineStartPoint.x, 2) +
-                                      math.pow(lineEndPoint.y - lineStartPoint.y, 2))
+        math.pow(lineEndPoint.y - lineStartPoint.y, 2))
     return numerator / denominator
 end
 
 -- source: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line
 function util.checkLineSegmentIntersection(line1Point1, line1Point2, line2Point1, line2Point2)
-
     local x1 = line1Point1.x
     local y1 = line1Point1.y
     local x2 = line1Point2.x
@@ -113,9 +111,9 @@ function util.findIntersection(line1Point1, line1Point2, line2Point1, line2Point
     local y4 = line2Point2.y
 
     local px = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) /
-                   ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
+        ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
     local py = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) /
-                   ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
+        ((x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4))
     return {
         x = px,
         y = py
@@ -130,14 +128,12 @@ function util.findIntersectingEdgePoints(polygon1Vertices, polygon2Vertices)
     local intersectingEdgePoint2
     local res = {}
     for i = 1, #polygon1Vertices, 1 do
-
         intersectingEdgePoint1 = polygon1Vertices[i]
 
         -- make sure it wraps
         if i == #polygon1Vertices then
             intersectingEdgePoint2 = polygon1Vertices[1]
         else
-
             intersectingEdgePoint2 = polygon1Vertices[i + 1]
         end
 
@@ -149,27 +145,6 @@ function util.findIntersectingEdgePoints(polygon1Vertices, polygon2Vertices)
     end
 end
 
--- draw a line from the centroids of both polygons. find the line segment that intersects this line for their
--- their respective polygon. Measure the perpendicular distance between one endpoint and the other line.
--- if any is within the threshold distance, return true.
-function util.preciseCheckPolygonCollision(polygon1Vertices, polygon2Vertices)
-    local polygon1PointA, polygon1PointB = util.findIntersectingEdgePoints(polygon1Vertices, polygon2Vertices)
-    local polygon2PointA, polygon2PointB = util.findIntersectingEdgePoints(polygon2Vertices, polygon1Vertices)
-    if polygon1PointA == nil or polygon1PointB == nil or polygon2PointA == nil or polygon2PointB == nil then
-        return true
-    end
-
-    local threshold = 2
-    local dist1A = util.perpendicularDistance(polygon1PointA, polygon2PointA, polygon2PointB)
-    local dist1B = util.perpendicularDistance(polygon1PointB, polygon2PointA, polygon2PointB)
-    local dist2A = util.perpendicularDistance(polygon2PointA, polygon1PointA, polygon1PointB)
-    local dist2B = util.perpendicularDistance(polygon2PointB, polygon1PointA, polygon1PointB)
-
-    local flag = dist1A <= threshold or dist1B <= threshold
-
-    return flag
-end
-
 -- poly vertices given in the colliders aren't relative to position.
 function util.getRelativePolygonVertices(polygonCollider)
     local polygonVertices = polygonCollider.fruitType.polygonVertices
@@ -178,7 +153,6 @@ function util.getRelativePolygonVertices(polygonCollider)
 
     local res = {}
     for i, v in ipairs(polygonVertices) do
-
         local rotatedx = v.x * math.cos(angle) - v.y * math.sin(angle)
         local rotatedy = v.y * math.cos(angle) + v.x * math.sin(angle)
         res[i] = {
@@ -187,7 +161,6 @@ function util.getRelativePolygonVertices(polygonCollider)
         }
     end
     return res
-
 end
 
 function util.findClosestPoint(point, points)
@@ -198,7 +171,6 @@ function util.findClosestPoint(point, points)
         if condition then
 
         end
-
     end
 end
 

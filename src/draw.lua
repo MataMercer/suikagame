@@ -14,6 +14,8 @@ function draw.drawCamera()
         drawFruit()
         DrawMergeEffects()
 
+        comboManager:draw()
+
         -- world:draw()
         -- particleWorld:draw()
     end

@@ -1,5 +1,5 @@
 local progressBar, leftPanel, rightPanel, scoreLabel, nextFruitImage
-local progressBarSpeed = 3
+local progressBarSpeed = 0.5
 
 local function destroyGameInterface()
     if Ui and leftPanel and rightPanel then
@@ -8,15 +8,6 @@ local function destroyGameInterface()
     end
 end
 function initRightPanel()
-    nextFruitImage = Ui.image({
-        image = FruitTypes[player.secondHeldFruit].spriteSheet,
-        x = 0,
-        y = 0,
-        w = 64,
-        h = 64,
-        keepAspectRatio = true
-    })
-
     progressBar = Ui.progressBar({
             speed = 0,
             value = 1,
@@ -64,12 +55,8 @@ function initRightPanel()
         :rowspanAt(4, 1)
         :rowspanAt(5, 1)
         :addAt(1, 1, progressBar)
-        :addAt(2, 1, Ui.label({
-            text = "Next Fruit:"
-        }))
-        :addAt(3, 1, nextFruitImage)
-        :addAt(4, 1, scoreLabel)
-        :addAt(5, 1, Ui.label({
+        :addAt(2, 1, scoreLabel)
+        :addAt(3, 1, Ui.label({
             text = "[Z] to drop fruit"
         }))
 end

@@ -12,6 +12,8 @@ local function updateGame(dt)
     updateFruit(dt)
     updateLimiter(dt)
     UpdateMergeEffects(dt)
+    comboManager:update(dt)
+
 
     --Custom Ui Components
     FruitEvoWheel:update(dt)

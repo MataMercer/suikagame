@@ -1,6 +1,5 @@
 Cutscene = {}
 
-
 function Cutscene:resetCutscene()
     Cutscene.timeElapsed = 0
     Cutscene.sequenceStep = 1
@@ -27,7 +26,6 @@ function Cutscene:update(dt)
     if Cutscene.isInitialized then
         Cutscene.timeElapsed = Cutscene.timeElapsed + dt
 
-        -- print(self.timeElapsed)
         if Cutscene.sequenceStep <= #Cutscene.sequence then
             local isWait = Cutscene.sequence[Cutscene.sequenceStep]()
             if isWait == nil then

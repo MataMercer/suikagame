@@ -1,10 +1,6 @@
+local Combo = require("src.mechanics.ComboManager")
 _G.enableFruitMerging = true
 _G.FruitCounter = 0
-
-_G.ComboTimeLimit = 2
-_G.ComboTimeElapsed = 0
-_G.Combos = {}
-
 _G.FruitSpawnPoints = {}
 
 local function preprocessFruitPolygonVertices()
@@ -23,21 +19,6 @@ local function preprocessFruitPolygonVertices()
 end
 preprocessFruitPolygonVertices()
 
-local function ComboCheck(x, y)
-    if ComboTimeElapsed <= ComboTimeLimit then
-        local c = {
-            x = x,
-            y = y,
-            alpha = 255
-        }
-
-        flux.to(c, 1, { alpha = 1 }):delay(0.2)
-        table.insert(Combos, c)
-    else
-        Combos = {}
-        ComboTimeElapsed = 0
-    end
-end
 
 
 function spawnFruit(x, y, direction, fruitIndex)
@@ -114,6 +95,7 @@ function spawnFruit(x, y, direction, fruitIndex)
             spawnX, spawnY = spawnX + rotatedx, spawnY + rotatedy
         end
 
+
         if collider2.fruitIndex + 1 < #FruitTypes then
             table.insert(FruitSpawnPoints,
                 { x = spawnX, y = spawnY, direction = collider2.direction, fruitIndex = collider2.fruitIndex + 1 })
@@ -122,7 +104,7 @@ function spawnFruit(x, y, direction, fruitIndex)
         collider2.dead = true
         collider1.dead = true
         SpawnMergeEffect(c1x, c1y, 5, collider1.fruitType.color)
-        ComboCheck(spawnX, spawnY)
+        comboManager:check(spawnX, spawnY)
 
         -- print(string.format("%d merged with %d ", collider2.id, collider1.id))
     end)
@@ -176,9 +158,6 @@ function updateFruit(dt)
         end
         i = i - 1
     end
-
-    --combo logic
-    ComboTimeElapsed = ComboTimeElapsed + dt
 end
 
 function drawFruit()
@@ -233,12 +212,5 @@ function drawFruit()
         -- draw Bounds
         -- love.graphics.circle("fill", Bounds.x, Bounds.y, 3, 10)
         -- love.graphics.circle("fill", Bounds.x + Bounds.width, Bounds.y + Bounds.height, 3, 10)
-    end
-
-    for index, c in ipairs(Combos) do
-        LgUtil.setColor(255, 255, 255, c.alpha)
-        love.graphics.setFont(Fonts.proggySquare, 0.1)
-        local scale = math.pow(index / 2, 1 / 3)
-        love.graphics.print(string.format("%d COMBO", index), c.x, c.y, 0, scale, scale)
     end
 end

@@ -2,6 +2,7 @@ function InitGameOverCutscene()
     gameOverCutsceneSeq = {}
     table.insert(gameOverCutsceneSeq, function()
         love.graphics.setShader(GrayScaleShader)
+        comboManager:destroy()
         Cutscene:wait(1, true)
         return true
     end)

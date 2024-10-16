@@ -1,4 +1,4 @@
-Actor = {
+_G.Actor = {
     name = nil,
     spawnX = 0,
     spawnY = 0,
