@@ -10,7 +10,6 @@ function draw.drawCamera()
         love.graphics.setColor(1, 1, 1)
 
         playerDraw()
-        actors:draw()
         drawFruit()
         DrawMergeEffects()
 

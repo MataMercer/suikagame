@@ -29,6 +29,10 @@ function util.findNearestCollider(subjectCol, colTargetClass)
     return nearbyCols[closestIndex]
 end
 
+function firstToUpper(str)
+    return (str:gsub("^%l", string.upper))
+end
+
 function util.rotationBetween(subjectX, subjectY, targetX, targetY)
     return math.atan2(subjectY - targetY, subjectX - targetX)
 end

@@ -30,15 +30,27 @@ function love.update(dt)
 end
 
 function love.draw()
-    sprites.background:setFilter("nearest", "nearest")
     if background then
         love.graphics.setColor(love.math.colorFromBytes(75, 114, 110, 255))
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(love.math.colorFromBytes(255, 255, 255, 255))
-        love.graphics.draw(background, 0, 0, nil, 3, 3)
+        local x, y = 0, 0
+
+        local scale = love.graphics.getHeight() / background:getHeight()
+        if backgroundScale then
+            scale = backgroundScale
+        end
+        if backgroundCentered then
+            local bgH = background:getHeight() * scale
+            local bgW = background:getWidth() * scale
+            x = love.graphics.getWidth() / 2 - bgW / 2
+            y = love.graphics.getHeight() / 2 - bgH / 2
+        end
+        -- scale = 1
+        love.graphics.draw(background, x, y, nil, scale, scale)
     end
-    love.graphics.setColor(1, 1, 1)
-    -- love.graphics.draw(sprites.background, 0, 0, nil, scale, scale)
+    LgUtil.resetColor()
+
     cam:attach()
     draw.drawCamera()
 
@@ -49,8 +61,8 @@ end
 function love.mousepressed(x, y, button)
     Ui:pressed(x, y, button)
     if GameState.state == GameState.GAMEPLAY then
-        spawnFruit(x, y, 1, 2)
-        -- SpawnMergeEffect(x, y, 5, { 255, 1, 1 })
+        playerDropFruit()
+        -- spawnFruit(x, y, 1, 2)
     end
 end
 

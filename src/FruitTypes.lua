@@ -1,4 +1,4 @@
-local scale = 8
+local scale = 7
 _G.FruitTypes = { {
     name = "cherry",
     shape = "circle",

@@ -25,9 +25,11 @@ function ComboManager.methods:check(x, y)
 
     flux.to(c, 1, { alpha = 1 }):delay(0.4)
     table.insert(self.combos, c)
+    return true
   else
     self.combos = {}
     self.comboTimeElapsed = 0
+    return false
   end
 end
 

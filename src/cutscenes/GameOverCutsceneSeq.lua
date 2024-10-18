@@ -18,9 +18,6 @@ function InitGameOverCutscene()
             table.insert(gameOverCutsceneSeq, function()
                 SpawnMergeEffect(x, y, 5, fruit.fruitType.color)
                 fruit.dead = true
-                if index == #Fruits then
-                    print("fruits dead")
-                end
             end)
             table.insert(gameOverCutsceneSeq, function()
                 Cutscene:wait(0.1, true)

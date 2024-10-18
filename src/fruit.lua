@@ -100,11 +100,17 @@ function spawnFruit(x, y, direction, fruitIndex)
             table.insert(FruitSpawnPoints,
                 { x = spawnX, y = spawnY, direction = collider2.direction, fruitIndex = collider2.fruitIndex + 1 })
         end
-        setScore(player.score + collider2.fruitType.radius)
         collider2.dead = true
         collider1.dead = true
         SpawnMergeEffect(c1x, c1y, 5, collider1.fruitType.color)
-        comboManager:check(spawnX, spawnY)
+        local isCombo = comboManager:check(spawnX, spawnY)
+
+        local comboMultiplier = 1
+        if isCombo then
+            comboMultiplier = #comboManager.combos
+        end
+        setScore(player.score + (collider2.fruitType.radius * comboMultiplier))
+
 
         -- print(string.format("%d merged with %d ", collider2.id, collider1.id))
     end)

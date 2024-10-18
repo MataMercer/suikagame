@@ -8,7 +8,7 @@ local function initPanel()
             w = width,
             h = 1000,
             -- debug = true,
-            rows = 8,
+            rows = 7,
             cols = 3,
             verticalScale = 1,
             tag = 'panelc',
@@ -19,7 +19,6 @@ local function initPanel()
         :colspanAt(1, 1, 3)
         :rowspanAt(4, 1)
         :rowspanAt(5, 1)
-        :rowspanAt(6, 1)
 
         --Title
         :addAt(1, 1, Ui.image({
@@ -41,15 +40,10 @@ local function initPanel()
                 initGameInterface()
             end))
 
+
+
+
         :addAt(5, 2, Ui.button({
-                text = 'Settings'
-            })
-            :action(function(e)
-                print("open settings")
-            end))
-
-
-        :addAt(6, 2, Ui.button({
                 text = 'Quit'
             })
             :action(function(e)

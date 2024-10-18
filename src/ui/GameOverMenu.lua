@@ -4,28 +4,32 @@ local function initPanel()
     local scoreLabel = Ui.label({
         text = "Final Score: " .. player.score
     })
-
-
-    local highScoreLabelText = ""
-    if player.score > player.highScore then
-        highScoreLabelText = "Congrats! You beat your high score! "
-    elseif player.score == player.highScore then
-        highScoreLabelText = "You tried"
-    else
-        highScoreLabelText = "You did not beat your high score."
-    end
     local highScoreLabel = Ui.label({
-        text = highScoreLabelText
+        text = "High Score: " .. player.highScore
     })
-    local width = 600
+
+
+
+    local resultText = ""
+    if player.score > player.highScore then
+        resultText = "Congrats! You beat your high score! "
+    elseif player.score == player.highScore then
+        resultText = "You tried"
+    else
+        resultText = "You did not beat your high score."
+    end
+    local resultText = Ui.label({
+        text = resultText
+    })
+    local width = love.graphics.getWidth() * 0.8
     return Ui.panel({
             x = love.graphics.getWidth() / 2 - width / 2,
-            y = love.graphics.getHeight() / 2 - 100,
+            y = love.graphics.getHeight() / 4 - 100,
             w = width,
             h = 1000,
             -- debug = true,
             rows = 8,
-            cols = 1,
+            cols = 3,
             verticalScale = 1,
             tag = 'panelc',
             -- bgColor = {0.2, 0.2, 0.7, 1},
@@ -35,9 +39,10 @@ local function initPanel()
         :rowspanAt(2, 1)
         :rowspanAt(3, 1)
         :rowspanAt(4, 1)
-        :addAt(1, 1, scoreLabel)
-        :addAt(2, 1, highScoreLabel)
-        :addAt(3, 1, Ui.button({
+        :addAt(1, 2, scoreLabel)
+        :addAt(2, 2, highScoreLabel)
+        :addAt(3, 2, resultText)
+        :addAt(4, 2, Ui.button({
             text = 'Restart'
         }):action(function(e)
             TEsound.play(sounds.click, "static")
@@ -46,8 +51,8 @@ local function initPanel()
             destroyGameOverMenu()
             initGameInterface()
         end))
-        :addAt(4, 1, Ui.button({
-            text = 'Title Screen'
+        :addAt(5, 2, Ui.button({
+            text = 'Title'
         }):action(function(e)
             TEsound.play(sounds.click, "static")
             GameStart:restart()

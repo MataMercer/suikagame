@@ -8,14 +8,6 @@ function destroyAll()
     -- removeTable(chests)
     -- removeTable(triggers)
 
-    local i = #actors
-    while i > -1 do
-        if actors[i] ~= nil then
-            actors[i].physics:destroy()
-        end
-        table.remove(actors, i)
-        i = i - 1
-    end
 
 end
 

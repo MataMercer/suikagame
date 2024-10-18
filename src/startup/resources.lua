@@ -4,15 +4,11 @@ sprites = {}
 sprites.playerSheet = love.graphics.newImage('sprites/playersheet.png')
 sprites.background = love.graphics.newImage('sprites/background.png')
 sprites.title = love.graphics.newImage('sprites/title.png')
-sprites.title:setFilter("nearest", "nearest")
 sprites.logo = love.graphics.newImage('sprites/logo.png')
 sprites.mergeParticle = love.graphics.newImage('sprites/mergeParticles.png')
 sprites.comboEffect = love.graphics.newImage('sprites/combo-sheet.png')
-
-sprites.comboEffect:setFilter("nearest", "nearest")
 --ui
 sprites.bgButton = love.graphics.newImage('sprites/BgButton.png')
-sprites.bgButton:setFilter("nearest", "nearest")
 
 --Fruit Sprites
 sprites.cherrySheet = love.graphics.newImage('sprites/cherry-Sheet.png')
@@ -28,12 +24,9 @@ sprites.pineappleSheet = love.graphics.newImage('sprites/pineapple-Sheet.png')
 sprites.melonSheet = love.graphics.newImage('sprites/melon-Sheet.png')
 sprites.watermelonSheet = love.graphics.newImage('sprites/watermelon-Sheet.png')
 
---
-
--- sprites.projectile = love.graphics.newImage('sprites/projectile.png')
-sprites.effects = {}
--- sprites.effects.hit = love.graphics.newImage('sprites/hitEffect-Sheet.png')
--- sprites.effects.assaulter = love.graphics.newImage('sprites/assaulter-hiteffect-Sheet.png')
+for k, v in pairs(sprites) do
+    v:setFilter("nearest", "nearest")
+end
 
 animations = {}
 

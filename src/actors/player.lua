@@ -59,20 +59,25 @@ end
 --     end
 -- end)
 
+
+function playerDropFruit()
+    if player.isCastingSkill == false and player.isMoving == false then
+        -- player.isMoving = false
+        spawnFruitThrow(player)
+        player.anim = player.animations.idle
+        player.isCastingSkill = true
+
+        player.heldFruit = player.secondHeldFruit
+        player.secondHeldFruit = generateHeldFruitIndex()
+
+        FruitEvoWheel:rotate(player.secondHeldFruit)
+    end
+end
+
 function love.keypressed(key)
     love.keyboard.setKeyRepeat(false)
     if key == 'z' or key == 's' then
-        if player.isCastingSkill == false and player.isMoving == false then
-            -- player.isMoving = false
-            spawnFruitThrow(player)
-            player.anim = player.animations.idle
-            player.isCastingSkill = true
-
-            player.heldFruit = player.secondHeldFruit
-            player.secondHeldFruit = generateHeldFruitIndex()
-
-            FruitEvoWheel:rotate(player.secondHeldFruit)
-        end
+        playerDropFruit()
     end
 end
 
@@ -83,7 +88,7 @@ function playerUpdate(dt)
         player.isMoving = false
         local walkForce = 300
         if player.grounded then
-            if love.keyboard.isDown('right') and player.isCastingSkill == false then
+            if (love.keyboard.isDown('right') or love.keyboard.isDown('d')) and player.isCastingSkill == false then
                 -- player:setX(px + player.speed * dt)
                 player.isMoving = true
                 player.direction = 1
@@ -91,7 +96,7 @@ function playerUpdate(dt)
                 player:setX(player:getX() + player.speed * dt)
                 player.anim = player.animations.run
             end
-            if love.keyboard.isDown('left') and player.isCastingSkill == false then
+            if (love.keyboard.isDown('left') or love.keyboard.isDown('a')) and player.isCastingSkill == false then
                 player:setX(player:getX() - player.speed * dt)
                 player.isMoving = true
                 player.direction = -1

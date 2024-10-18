@@ -37,6 +37,22 @@ function FruitEvoWheel:update(dt)
     self.rotation)
 end
 
+function drawEvoWheelLabel(x, y, fruitType)
+  local labelText = string.format("Next:" .. firstToUpper(fruitType.name))
+  local labelTextScale = 0.5
+  local labelPadding = 10
+  love.graphics.setFont(Fonts.proggySquare, 0.1)
+  local fontWidth = love.graphics.getFont():getWidth(labelText)
+  local fontHeight = love.graphics.getFont():getHeight(labelText)
+  local labelWidth = fontWidth * labelTextScale + labelPadding
+  local labelHeight = fontHeight * labelTextScale + labelPadding
+  local labelx, labely = x - (labelWidth / 2), y - 60
+  love.graphics.setColor(love.math.colorFromBytes(75, 114, 110, 255))
+  love.graphics.rectangle("fill", labelx, labely, labelWidth, labelHeight, 0, 0, 2)
+  LgUtil.resetColor()
+  love.graphics.print(labelText, labelx + labelPadding / 2, labely + labelPadding / 2, 0, 0.5, labelTextScale)
+end
+
 function FruitEvoWheel:draw()
   -- love.graphics.circle("line", self.x, self.y, 100, #FruitTypes)
   for index, p in ipairs(self.points) do
@@ -47,8 +63,10 @@ function FruitEvoWheel:draw()
   end
   for index, p in ipairs(self.points) do
     if index == player.secondHeldFruit and FruitEvoWheel.index then
+      local fruitType = FruitTypes[index]
       love.graphics.circle("fill", p.x, p.y, 30, #FruitTypes)
-      love.graphics.draw(FruitTypes[index].spriteSheet, p.x, p.y, 0, self.scale, self.scale, 32, 32)
+      love.graphics.draw(fruitType.spriteSheet, p.x, p.y, 0, self.scale, self.scale, 32, 32)
+      drawEvoWheelLabel(p.x, p.y, fruitType)
     end
   end
 end
