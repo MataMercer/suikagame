@@ -47,7 +47,18 @@ function love.draw()
             y = love.graphics.getHeight() / 2 - bgH / 2
         end
         -- scale = 1
+
+
         love.graphics.draw(background, x, y, nil, scale, scale)
+        if sprites.foreground and GameState.state == GameState.GAMEPLAY then
+            love.graphics.draw(
+                sprites.foreground,
+                0,
+                500,
+                nil,
+                scale,
+                scale)
+        end
     end
     LgUtil.resetColor()
 

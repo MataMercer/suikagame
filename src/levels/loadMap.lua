@@ -35,16 +35,5 @@ function loadMap(mapName, destX, destY)
             spawnLimiter(obj.x, obj.y, obj.width, obj.height)
         end
     end
-    if gameMap.layers["Enemies"] then
-        for i, obj in pairs(gameMap.layers["Enemies"].objects) do
-            spawnEnemy(obj.x, obj.y, "DarkTree")
-        end
-    end
-    if gameMap.layers["Flag"] then
-        for i, obj in pairs(gameMap.layers["Flag"].objects) do
-            flagX = obj.x
-            flagY = obj.y
-        end
-    end
     print('map loaded')
 end

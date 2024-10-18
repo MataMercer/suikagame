@@ -3,12 +3,13 @@ sprites = {}
 --Misc
 sprites.playerSheet = love.graphics.newImage('sprites/playersheet.png')
 sprites.background = love.graphics.newImage('sprites/background.png')
+sprites.foreground = love.graphics.newImage('sprites/foreground.png')
 sprites.title = love.graphics.newImage('sprites/title.png')
 sprites.logo = love.graphics.newImage('sprites/logo.png')
-sprites.mergeParticle = love.graphics.newImage('sprites/mergeParticles.png')
+sprites.mergeParticle = love.graphics.newImage('sprites/mergeparticles.png')
 sprites.comboEffect = love.graphics.newImage('sprites/combo-sheet.png')
 --ui
-sprites.bgButton = love.graphics.newImage('sprites/BgButton.png')
+sprites.bgButton = love.graphics.newImage('sprites/bgbutton.png')
 
 --Fruit Sprites
 sprites.cherrySheet = love.graphics.newImage('sprites/cherry-Sheet.png')
